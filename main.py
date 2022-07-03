@@ -7,21 +7,25 @@ import Menu
 class Window(tkinter.Tk):
     def __init__(self):
         super().__init__()
-        self.resolution = (245, 245)
+        self.resolution = None
+        self.min_resolution = (245, 245)
         self.title("Minesweeper")
-        self.geometry("{}x{}".format(*self.resolution))
         self.resizable(False, False)
         self.top_bar = None
         self.board = None
         self.menu = Menu.Menu(self, self.reset_game)
         self.config(menu=self.menu)
-        self.init_game()
+        self.init_game(False)
         self.bind("<F2>", self.reset_game)
         self.mainloop()
 
-    def init_game(self):
-        option = self.menu.get_option()
-        self.resolution = (16 * option[0][0] + 20, 16 * option[0][1] + 5 + 5 + 24 + 20)
+    def init_game(self, custom_size):
+        option = self.menu.get_custom_option() if custom_size else self.menu.get_option()
+        self.resolution = [16 * option[0][0] + 20, 16 * option[0][1] + 54]
+        if self.resolution[0] < self.min_resolution[0]:
+            self.resolution[0] = self.min_resolution[0]
+        if self.resolution[1] < self.min_resolution[1]:
+            self.resolution[1] = self.min_resolution[1]
         self.geometry("{}x{}".format(*self.resolution))
         self.top_bar = Topbar.Topbar(self, option[1], self.reset_game)
         self.top_bar.pack(pady=5)
@@ -45,7 +49,7 @@ class Window(tkinter.Tk):
         self.top_bar.stop_timer()
         self.top_bar.destroy()
         self.board.destroy()
-        self.init_game()
+        self.init_game(self.menu.check_if_custom())
 
 
 if __name__ == "__main__":
