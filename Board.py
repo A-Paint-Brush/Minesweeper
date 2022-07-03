@@ -15,7 +15,7 @@ class Board(tkinter.Frame):
         self.images = dict((image[:-4], tkinter.PhotoImage(file=os.path.join(image_dir, image))) for image in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, image)))
         self.buttons = []
         self.number_list = []
-        self.mark_counter = 10
+        self.mark_counter = mine_number
         self.gameover = False
         self.first_click = False
         self.start_func = start_timer

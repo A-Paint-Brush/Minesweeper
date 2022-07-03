@@ -4,7 +4,7 @@ import Timer
 
 
 class Topbar(tkinter.Frame):
-    def __init__(self, root, reset):
+    def __init__(self, root, mark_number, reset):
         super().__init__(root)
         self.root = root
         image_dir = os.path.normpath(".\\Images\\top bar")
@@ -16,7 +16,7 @@ class Topbar(tkinter.Frame):
         self.timer_str = "000"
         self.reset_func = reset
         self.mark_frame = tkinter.Frame(self)
-        self.mark_display = list(tkinter.Label(self.mark_frame, bd=0, highlightthickness=0, image=self.images[i]) for i in "010")
+        self.mark_display = list(tkinter.Label(self.mark_frame, bd=0, highlightthickness=0, image=self.images[i]) for i in str(mark_number).zfill(3))
         for i in self.mark_display:
             i.pack(side="left")
         self.mark_frame.pack(side="left")

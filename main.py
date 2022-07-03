@@ -1,6 +1,7 @@
 import tkinter
 import Board
 import Topbar
+import Menu
 
 
 class Window(tkinter.Tk):
@@ -12,13 +13,19 @@ class Window(tkinter.Tk):
         self.resizable(False, False)
         self.top_bar = None
         self.board = None
+        self.menu = Menu.Menu(self, self.reset_game)
+        self.config(menu=self.menu)
         self.init_game()
+        self.bind("<F2>", self.reset_game)
         self.mainloop()
 
     def init_game(self):
-        self.top_bar = Topbar.Topbar(self, self.reset_game)
+        option = self.menu.get_option()
+        self.resolution = (16 * option[0][0] + 20, 16 * option[0][1] + 5 + 5 + 24 + 20)
+        self.geometry("{}x{}".format(*self.resolution))
+        self.top_bar = Topbar.Topbar(self, option[1], self.reset_game)
         self.top_bar.pack(pady=5)
-        self.board = Board.Board(self, (8, 8), 10, self.start_timer, self.stop_timer, self.set_mark_number)
+        self.board = Board.Board(self, *option, self.start_timer, self.stop_timer, self.set_mark_number)
         self.board.pack()
         self.bind("<Button-1>", self.top_bar.start_o)
         self.bind("<ButtonRelease-1>", self.top_bar.stop_o)
@@ -32,9 +39,10 @@ class Window(tkinter.Tk):
     def set_mark_number(self, number):
         self.top_bar.set_mark_number(number)
 
-    def reset_game(self):
+    def reset_game(self, event=None):
         self.unbind("<Button-1>")
         self.unbind("<ButtonRelease-1>")
+        self.top_bar.stop_timer()
         self.top_bar.destroy()
         self.board.destroy()
         self.init_game()
