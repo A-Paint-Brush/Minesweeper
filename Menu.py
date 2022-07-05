@@ -1,11 +1,10 @@
 import tkinter
 import tkinter.messagebox as msg
-import Custom
 import Help
-# TODO: Win detection
+import Custom
+# TODO: Function on clicking both mouse buttons at the same time
 # TODO: Bug testing
 # TODO: Write README file
-# FIXME: Window is too small for title to fit in title bar
 
 
 class Menu(tkinter.Menu):
@@ -38,7 +37,7 @@ class Menu(tkinter.Menu):
         Help.Help(self.root, self.close_help_dialog)
 
     def launch_custom_dialog(self):
-        Custom.Dialog(self.root, self.set_custom_option, self.cancel_custom_option)
+        Custom.Dialog(self.root, self.set_custom_option, self.cancel_custom_option, self.options[self.prev_opt][1:] if self.custom_option is None else self.custom_option)
 
     def close_help_dialog(self):
         self.help_menu.entryconfigure(0, state="normal")
@@ -65,7 +64,8 @@ class Menu(tkinter.Menu):
         return self.custom_option
 
     def cancel_custom_option(self):
-        self.board_size.set(self.prev_opt)
+        if self.custom_option is None:
+            self.board_size.set(self.prev_opt)
 
     def about(self):
-        msg.showinfo("Minesweeper", "This is a recreation of the Windows 95 Minesweeper written in Python.")
+        msg.showinfo("Minesweeper", "This is a recreation of the Windows 95 Minesweeper written in Python.", master=self.root)

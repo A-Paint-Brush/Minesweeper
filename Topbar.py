@@ -1,6 +1,6 @@
 import os
-import tkinter
 import Timer
+import tkinter
 
 
 class Topbar(tkinter.Frame):
@@ -12,7 +12,7 @@ class Topbar(tkinter.Frame):
         self.timer_obj = Timer.Timer()
         self.timer_obj.reset()
         self.next_id = None
-        self.dead = False
+        self.game_over = False
         self.timer_str = "000"
         self.reset_func = reset
         self.mark_frame = tkinter.Frame(self)
@@ -29,17 +29,23 @@ class Topbar(tkinter.Frame):
         self.timer_frame.pack(side="left")
 
     def reset(self):
-        self.dead = True
+        self.game_over = True
         if self.next_id is not None:
             self.root.after_cancel(self.next_id)
         self.reset_func()
 
+    def win(self):
+        self.game_over = True
+        if self.next_id is not None:
+            self.root.after_cancel(self.next_id)
+        self.face_btn.config(image=self.images["boss"])
+
     def start_o(self, event=None):
-        if not self.dead:
+        if not self.game_over:
             self.face_btn.config(image=self.images["click"])
 
     def stop_o(self, event=None):
-        if not self.dead:
+        if not self.game_over:
             self.face_btn.config(image=self.images["smile"])
 
     def set_mark_number(self, number):
@@ -52,7 +58,7 @@ class Topbar(tkinter.Frame):
         self.update_timer()
 
     def stop_timer(self):
-        self.dead = True
+        self.game_over = True
         if self.next_id is not None:
             self.root.after_cancel(self.next_id)
         self.face_btn.config(image=self.images["dead"])

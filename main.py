@@ -1,7 +1,8 @@
-import tkinter
+import os
+import Menu
 import Board
 import Topbar
-import Menu
+import tkinter
 
 
 class Window(tkinter.Tk):
@@ -11,6 +12,7 @@ class Window(tkinter.Tk):
         self.min_resolution = (245, 245)
         self.title("Minesweeper")
         self.resizable(False, False)
+        self.iconbitmap(os.path.normpath(".\\Images\\icon\\Icon.ico"))
         self.top_bar = None
         self.board = None
         self.menu = Menu.Menu(self, self.reset_game)
@@ -29,7 +31,7 @@ class Window(tkinter.Tk):
         self.geometry("{}x{}".format(*self.resolution))
         self.top_bar = Topbar.Topbar(self, option[1], self.reset_game)
         self.top_bar.pack(pady=5)
-        self.board = Board.Board(self, *option, self.start_timer, self.stop_timer, self.set_mark_number)
+        self.board = Board.Board(self, *option, self.start_timer, self.stop_timer, self.set_mark_number, self.win)
         self.board.pack()
         self.bind("<Button-1>", self.top_bar.start_o)
         self.bind("<ButtonRelease-1>", self.top_bar.stop_o)
@@ -42,6 +44,9 @@ class Window(tkinter.Tk):
 
     def set_mark_number(self, number):
         self.top_bar.set_mark_number(number)
+
+    def win(self):
+        self.top_bar.win()
 
     def reset_game(self, event=None):
         self.unbind("<Button-1>")

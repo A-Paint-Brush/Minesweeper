@@ -10,6 +10,7 @@ class Help(tkinter.Toplevel):
         self.title("Minesweeper")
         self.geometry("{}x{}".format(*self.resolution))
         self.resizable(False, False)
+        self.iconbitmap(os.path.normpath(".\\Images\\icon\\Icon.ico"))
         scrollbar = tkinter.Scrollbar(self)
         scrollbar.pack(side="right", fill="y")
         text = tkinter.Text(self, yscrollcommand=scrollbar.set, wrap="word", font=("simhei", 12, "normal"))

@@ -5,7 +5,7 @@ from functools import partial
 
 
 class Board(tkinter.Frame):
-    def __init__(self, root, board_size, mine_number, start_timer, stop_timer, set_mark_number):
+    def __init__(self, root, board_size, mine_number, start_timer, stop_timer, set_mark_number, set_win):
         super().__init__(root)
         self.board_size = board_size
         self.mine_number = mine_number
@@ -16,10 +16,11 @@ class Board(tkinter.Frame):
         self.buttons = []
         self.number_list = []
         self.mark_counter = mine_number
-        self.gameover = False
+        self.game_over = False
         self.first_click = False
         self.start_func = start_timer
         self.stop_func = stop_timer
+        self.win_func = set_win
         self.set_mark_func = set_mark_number
         for row in range(self.board_size[1]):
             temp_frame = tkinter.Frame(self)
@@ -30,9 +31,10 @@ class Board(tkinter.Frame):
                 self.buttons[row][column].pack(side="left")
                 self.buttons[row][column].bind("<Button-3>", partial(self.mark_flag, row, column))
         self.choose_mines()
+        # print("{}\n{}".format("\n".join(str(i) for i in self.mine_list), "-" * 30))
 
     def mark_flag(self, row, column, event=None):
-        if not self.gameover:
+        if not self.game_over:
             states = ("unopened", "mark", "unsure")
             if self.visual_list[row][column] in states:
                 if self.visual_list[row][column] == "unopened":
@@ -77,19 +79,28 @@ class Board(tkinter.Frame):
         if not self.first_click:
             self.first_click = True
             self.start_func()
-        if (self.visual_list[row][column] != "unopened" and self.visual_list[row][column] != "unsure") or self.gameover:
+        if (self.visual_list[row][column] != "unopened" and self.visual_list[row][column] != "unsure") or self.game_over:
             return None
         if self.mine_list[row][column]:
-            self.game_over(row, column)
+            self.death(row, column)
+            return None
         elif self.number_list[row][column]:
             self.visual_list[row][column] = str(self.number_list[row][column])
             self.buttons[row][column].config(image=self.images[self.visual_list[row][column]])
         else:
             self.visited = list(list(0 for c in range(self.board_size[0])) for r in range(self.board_size[1]))
             self.reveal(row, column)
+        count = 0
+        for row in range(self.board_size[1]):
+            for column in range(self.board_size[0]):
+                if self.visual_list[row][column] in ("unopened", "mark", "unsure"):
+                    count += 1
+        if count == self.mine_number:
+            self.game_over = True
+            self.win_func()
 
-    def game_over(self, r, c):
-        self.gameover = True
+    def death(self, r, c):
+        self.game_over = True
         self.stop_func()
         for row in range(self.board_size[1]):
             for column in range(self.board_size[0]):
@@ -97,6 +108,8 @@ class Board(tkinter.Frame):
                     if row == r and column == c:
                         self.visual_list[row][column] = "triggered mine"
                         self.buttons[row][column].config(image=self.images[self.visual_list[row][column]])
+                    elif self.visual_list[row][column] == "mark":
+                        continue
                     else:
                         self.visual_list[row][column] = "revealed mine"
                         self.buttons[row][column].config(image=self.images[self.visual_list[row][column]])
