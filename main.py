@@ -23,15 +23,18 @@ class Window(tkinter.Tk):
 
     def init_game(self, custom_size):
         option = self.menu.get_custom_option() if custom_size else self.menu.get_option()
-        self.resolution = [16 * option[0][0] + 20, 16 * option[0][1] + 54]
+        self.resolution = [16 * (option[0][0] if custom_size else option[1][0]) + 20, 16 * (option[0][1] if custom_size else option[1][1]) + 54]
         if self.resolution[0] < self.min_resolution[0]:
             self.resolution[0] = self.min_resolution[0]
         if self.resolution[1] < self.min_resolution[1]:
             self.resolution[1] = self.min_resolution[1]
         self.geometry("{}x{}".format(*self.resolution))
-        self.top_bar = Topbar.Topbar(self, option[1], self.reset_game)
+        self.top_bar = Topbar.Topbar(self, option[1] if custom_size else option[2], self.reset_game, "Custom" if custom_size else option[0])
         self.top_bar.pack(pady=5)
-        self.board = Board.Board(self, *option, self.start_timer, self.stop_timer, self.set_mark_number, self.win)
+        if custom_size:
+            self.board = Board.Board(self, *option, self.start_timer, self.stop_timer, self.set_mark_number, self.win)
+        else:
+            self.board = Board.Board(self, option[1], option[2], self.start_timer, self.stop_timer, self.set_mark_number, self.win)
         self.board.pack()
         self.bind("<Button-1>", self.top_bar.start_o)
         self.bind("<ButtonRelease-1>", self.top_bar.stop_o)

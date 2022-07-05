@@ -1,10 +1,11 @@
 import os
 import Timer
+import Score
 import tkinter
 
 
 class Topbar(tkinter.Frame):
-    def __init__(self, root, mark_number, reset):
+    def __init__(self, root, mark_number, reset, difficulty):
         super().__init__(root)
         self.root = root
         image_dir = os.path.normpath(".\\Images\\top bar")
@@ -15,6 +16,7 @@ class Topbar(tkinter.Frame):
         self.game_over = False
         self.timer_str = "000"
         self.reset_func = reset
+        self.difficulty = difficulty
         self.mark_frame = tkinter.Frame(self)
         self.mark_display = list(tkinter.Label(self.mark_frame, bd=0, highlightthickness=0, image=self.images[i]) for i in str(mark_number).zfill(3))
         for i in self.mark_display:
@@ -39,6 +41,24 @@ class Topbar(tkinter.Frame):
         if self.next_id is not None:
             self.root.after_cancel(self.next_id)
         self.face_btn.config(image=self.images["boss"])
+        # Start high score detection
+        if self.difficulty == "Custom":
+            return None
+        else:
+            timer = int(self.timer_str)
+            check = Score.compare_score(self.difficulty, timer)
+            if check is None:
+                return None
+            elif check:
+                Score.NameDialog(self.root, self.difficulty, timer, self.register_done)
+            else:
+                return None
+
+    def register_done(self, error_code):
+        if (error_code is None) or error_code:
+            return None
+        else:
+            Score.ScoreBoard(self.root)
 
     def start_o(self, event=None):
         if not self.game_over:
