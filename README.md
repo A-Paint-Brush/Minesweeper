@@ -10,7 +10,7 @@ Windows Executable: [Minesweeper.exe](https://github.com/A-Paint-Brush/Minesweep
 
 ### Installation Instructions
 
-Just place the executable into `C:\Windows` or any other directory you like, and then make a shortcut to it on the desktop. I recommend you don't place the executable on the desktop because the executable generates a save file in its working directory, so if you put it there the save file will also be visible on the desktop.
+Just place the executable into any directory you like, and then make a shortcut to it on the desktop. I recommend you don't place the executable on the desktop because the executable generates a save file in its working directory, so if you put it there the save file will also be visible on the desktop.
 
 ### Rules and Instructions
 
