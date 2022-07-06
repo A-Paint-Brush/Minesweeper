@@ -1,11 +1,8 @@
 import tkinter
 import tkinter.messagebox as msg
 import Help
-import Custom
 import Score
-# TODO: Function on clicking both mouse buttons at the same time
-# TODO: Bug testing
-# TODO: Write README file
+import Custom
 
 
 class Menu(tkinter.Menu):
@@ -16,7 +13,7 @@ class Menu(tkinter.Menu):
         self.toggle_marks = toggle_marks
         self.game_menu = tkinter.Menu(self, tearoff=0)
         self.add_cascade(label="Game", menu=self.game_menu)
-        self.game_menu.add_command(label="New{}F2".format(" " * 25), command=self.reset_game)
+        self.game_menu.add_command(label="New{}F2".format(" " * 20), command=self.reset_game)
         self.game_menu.add_separator()
         self.options = (("Beginner", (8, 8), 10), ("Intermediate", (16, 16), 40), ("Expert", (30, 16), 99))
         self.board_size = tkinter.IntVar()

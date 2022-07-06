@@ -1,4 +1,5 @@
 import os
+import Path
 import tkinter
 try:
     import winsound
@@ -14,7 +15,7 @@ class Dialog(tkinter.Toplevel):
         self.title("Custom Field")
         self.geometry("{}x{}".format(*self.resolution))
         self.resizable(False, False)
-        self.iconbitmap(os.path.normpath(".\\Images\\icon\\Icon.ico"))
+        self.iconbitmap(Path.resource_path(os.path.normpath(".\\Images\\icon\\Icon.ico")))
         self.root = root
         self.ok_func = set_custom_opt
         self.cancel_func = cancel_custom_opt

@@ -1,4 +1,5 @@
 import os
+import Path
 import json
 import tkinter
 import tkinter.ttk
@@ -49,7 +50,7 @@ class ScoreBoard(tkinter.Toplevel):
         self.title("Best Times")
         self.geometry("{}x{}".format(*self.resolution))
         self.resizable(False, False)
-        self.iconbitmap(os.path.normpath(".\\Images\\icon\\Icon.ico"))
+        self.iconbitmap(Path.resource_path(os.path.normpath(".\\Images\\icon\\Icon.ico")))
         self.root = root
         self.content_frame = None
         self.show_data()
@@ -104,7 +105,7 @@ class NameDialog(tkinter.Toplevel):
         self.title("Congratulations")
         self.geometry("{}x{}".format(*self.resolution))
         self.resizable(False, False)
-        self.iconbitmap(os.path.normpath(".\\Images\\icon\\Icon.ico"))
+        self.iconbitmap(Path.resource_path(os.path.normpath(".\\Images\\icon\\Icon.ico")))
         self.difficulty = difficulty
         self.timer = timer
         self.return_func = return_func
