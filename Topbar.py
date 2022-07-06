@@ -1,4 +1,5 @@
 import os
+import Path
 import Timer
 import Score
 import tkinter
@@ -8,7 +9,7 @@ class Topbar(tkinter.Frame):
     def __init__(self, root, mark_number, reset, difficulty):
         super().__init__(root)
         self.root = root
-        image_dir = os.path.normpath(".\\Images\\top bar")
+        image_dir = Path.resource_path(os.path.normpath(".\\Images\\top bar"))
         self.images = dict((image[:-4], tkinter.PhotoImage(file=os.path.join(image_dir, image))) for image in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, image)))
         self.timer_obj = Timer.Timer()
         self.timer_obj.reset()
@@ -41,7 +42,6 @@ class Topbar(tkinter.Frame):
         if self.next_id is not None:
             self.root.after_cancel(self.next_id)
         self.face_btn.config(image=self.images["boss"])
-        # Start high score detection
         if self.difficulty == "Custom":
             return None
         else:
