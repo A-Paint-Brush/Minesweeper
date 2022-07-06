@@ -15,11 +15,14 @@ class Window(tkinter.Tk):
         self.iconbitmap(os.path.normpath(".\\Images\\icon\\Icon.ico"))
         self.top_bar = None
         self.board = None
-        self.menu = Menu.Menu(self, self.reset_game)
+        self.menu = Menu.Menu(self, self.reset_game, self.toggle_marks)
         self.config(menu=self.menu)
+        self.after_idle(self.first_init)
+        self.mainloop()
+
+    def first_init(self):
         self.init_game(False)
         self.bind("<F2>", self.reset_game)
-        self.mainloop()
 
     def init_game(self, custom_size):
         option = self.menu.get_custom_option() if custom_size else self.menu.get_option()
@@ -32,12 +35,15 @@ class Window(tkinter.Tk):
         self.top_bar = Topbar.Topbar(self, option[1] if custom_size else option[2], self.reset_game, "Custom" if custom_size else option[0])
         self.top_bar.pack(pady=5)
         if custom_size:
-            self.board = Board.Board(self, *option, self.start_timer, self.stop_timer, self.set_mark_number, self.win)
+            self.board = Board.Board(self, *option, self.start_timer, self.stop_timer, self.set_mark_number, self.win, self.menu.get_mark_option())
         else:
-            self.board = Board.Board(self, option[1], option[2], self.start_timer, self.stop_timer, self.set_mark_number, self.win)
+            self.board = Board.Board(self, option[1], option[2], self.start_timer, self.stop_timer, self.set_mark_number, self.win, self.menu.get_mark_option())
         self.board.pack()
         self.bind("<Button-1>", self.top_bar.start_o)
         self.bind("<ButtonRelease-1>", self.top_bar.stop_o)
+
+    def toggle_marks(self, state):
+        self.board.toggle_question_marks(state)
 
     def start_timer(self):
         self.top_bar.start_timer()

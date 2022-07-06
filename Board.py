@@ -5,7 +5,7 @@ from functools import partial
 
 
 class Board(tkinter.Frame):
-    def __init__(self, root, board_size, mine_number, start_timer, stop_timer, set_mark_number, set_win):
+    def __init__(self, root, board_size, mine_number, start_timer, stop_timer, set_mark_number, set_win, allow_question_marks):
         super().__init__(root)
         self.board_size = board_size
         self.mine_number = mine_number
@@ -18,6 +18,7 @@ class Board(tkinter.Frame):
         self.mark_counter = mine_number
         self.game_over = False
         self.first_click = False
+        self.allow_question_marks = allow_question_marks
         self.start_func = start_timer
         self.stop_func = stop_timer
         self.win_func = set_win
@@ -35,7 +36,7 @@ class Board(tkinter.Frame):
 
     def mark_flag(self, row, column, event=None):
         if not self.game_over:
-            states = ("unopened", "mark", "unsure")
+            states = ("unopened", "mark", "unsure") if self.allow_question_marks else ("unopened", "mark")
             if self.visual_list[row][column] in states:
                 if self.visual_list[row][column] == "unopened":
                     if self.mark_counter <= 0:
@@ -45,8 +46,17 @@ class Board(tkinter.Frame):
                 elif self.visual_list[row][column] == "mark":
                     self.mark_counter += 1
                 self.set_mark_func(self.mark_counter)
-                self.visual_list[row][column] = states[(states.index(self.visual_list[row][column]) + 1) % 3]
+                self.visual_list[row][column] = states[(states.index(self.visual_list[row][column]) + 1) % len(states)]
                 self.buttons[row][column].config(image=self.images[self.visual_list[row][column]])
+
+    def toggle_question_marks(self, state):
+        self.allow_question_marks = state
+        if not state:
+            for row in range(self.board_size[1]):
+                for column in range(self.board_size[0]):
+                    if self.visual_list[row][column] == "unsure":
+                        self.visual_list[row][column] = "unopened"
+                        self.buttons[row][column].config(image=self.images[self.visual_list[row][column]])
 
     def choose_mines(self):
         indexes = []

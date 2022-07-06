@@ -9,10 +9,11 @@ import Score
 
 
 class Menu(tkinter.Menu):
-    def __init__(self, root, reset_game):
+    def __init__(self, root, reset_game, toggle_marks):
         super().__init__(root)
         self.root = root
         self.reset_game = reset_game
+        self.toggle_marks = toggle_marks
         self.game_menu = tkinter.Menu(self, tearoff=0)
         self.add_cascade(label="Game", menu=self.game_menu)
         self.game_menu.add_command(label="New{}F2".format(" " * 25), command=self.reset_game)
@@ -25,6 +26,10 @@ class Menu(tkinter.Menu):
             self.game_menu.add_radiobutton(label=option[0], value=index, variable=self.board_size, command=self.option_confirm)
         self.game_menu.add_radiobutton(label="Custom", value=3, variable=self.board_size, command=self.launch_custom_dialog)
         self.board_size.set(0)
+        self.game_menu.add_separator()
+        self.mark = tkinter.BooleanVar()
+        self.game_menu.add_checkbutton(label="Marks (?)", variable=self.mark, command=self.mark_option)
+        self.mark.set(True)
         self.game_menu.add_separator()
         self.game_menu.add_command(label="Best Times...", command=self.launch_scores_dialog)
         self.game_menu.add_separator()
@@ -52,6 +57,12 @@ class Menu(tkinter.Menu):
         self.prev_opt = self.board_size.get()
         self.custom_option = None
         self.reset_game()
+
+    def mark_option(self):
+        self.toggle_marks(self.mark.get())
+
+    def get_mark_option(self):
+        return self.mark.get()
 
     def get_option(self):
         return self.options[self.board_size.get()]
