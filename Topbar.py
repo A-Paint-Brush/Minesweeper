@@ -9,7 +9,7 @@ class Topbar(tkinter.Frame):
     def __init__(self, root, mark_number, reset, difficulty):
         super().__init__(root)
         self.root = root
-        image_dir = Path.resource_path(os.path.normpath(".\\Images\\top bar"))
+        image_dir = Path.resource_path(os.path.normpath("./Images/top bar"))
         self.images = dict((image[:-4], tkinter.PhotoImage(file=os.path.join(image_dir, image))) for image in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, image)))
         self.timer_obj = Timer.Timer()
         self.timer_obj.reset()

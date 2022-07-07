@@ -7,9 +7,9 @@ import tkinter.messagebox as msg
 
 
 def ensure_exists():
-    if not os.path.isfile(os.path.normpath(".\\Minesweeper.json")):
+    if not os.path.isfile(os.path.normpath("./Minesweeper.json")):
         try:
-            file = open(os.path.normpath(".\\Minesweeper.json"), "w", encoding="utf8")
+            file = open(os.path.normpath("./Minesweeper.json"), "w", encoding="utf8")
             data = {"score": {"Beginner": ["Anonymous", 999], "Intermediate": ["Anonymous", 999], "Expert": ["Anonymous", 999]}}
             file.write(json.dumps(data, indent=4))
             file.close()
@@ -23,7 +23,7 @@ def ensure_exists():
 
 def read_scores():
     try:
-        file = open(os.path.normpath(".\\Minesweeper.json"), "r", encoding="utf8")
+        file = open(os.path.normpath("./Minesweeper.json"), "r", encoding="utf8")
         data = json.loads(file.read())
         file.close()
     except (IOError, OSError, json.decoder.JSONDecodeError):
@@ -50,7 +50,7 @@ class ScoreBoard(tkinter.Toplevel):
         self.title("Best Times")
         self.geometry("{}x{}".format(*self.resolution))
         self.resizable(False, False)
-        self.iconbitmap(Path.resource_path(os.path.normpath(".\\Images\\icon\\Icon.ico")))
+        self.iconbitmap(Path.resource_path(os.path.normpath("./Images/icon/Icon.ico")))
         self.root = root
         self.content_frame = None
         self.show_data()
@@ -85,8 +85,8 @@ class ScoreBoard(tkinter.Toplevel):
 
     def reset_scores(self):
         try:
-            if os.path.isfile(os.path.normpath(".\\Minesweeper.json")):
-                os.remove(os.path.normpath(".\\Minesweeper.json"))
+            if os.path.isfile(os.path.normpath("./Minesweeper.json")):
+                os.remove(os.path.normpath("./Minesweeper.json"))
         except (IOError, OSError):
             msg.showerror("Error", "Failed to reset scores.", parent=self)
         finally:
@@ -105,7 +105,7 @@ class NameDialog(tkinter.Toplevel):
         self.title("Congratulations")
         self.geometry("{}x{}".format(*self.resolution))
         self.resizable(False, False)
-        self.iconbitmap(Path.resource_path(os.path.normpath(".\\Images\\icon\\Icon.ico")))
+        self.iconbitmap(Path.resource_path(os.path.normpath("./Images/icon/Icon.ico")))
         self.difficulty = difficulty
         self.timer = timer
         self.return_func = return_func
@@ -140,7 +140,7 @@ class NameDialog(tkinter.Toplevel):
         else:
             data["score"][self.difficulty] = [name, self.timer]
             try:
-                file = open(os.path.normpath(".\\Minesweeper.json"), "w", encoding="utf8")
+                file = open(os.path.normpath("./Minesweeper.json"), "w", encoding="utf8")
                 file.write(json.dumps(data, indent=4))
                 file.close()
             except (IOError, OSError):

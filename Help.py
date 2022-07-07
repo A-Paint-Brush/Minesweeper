@@ -11,7 +11,7 @@ class Help(tkinter.Toplevel):
         self.title("Minesweeper")
         self.geometry("{}x{}".format(*self.resolution))
         self.resizable(False, False)
-        self.iconbitmap(Path.resource_path(os.path.normpath(".\\Images\\icon\\Icon.ico")))
+        self.iconbitmap(Path.resource_path(os.path.normpath("./Images/icon/Icon.ico")))
         scrollbar = tkinter.Scrollbar(self)
         scrollbar.pack(side="right", fill="y")
         text = tkinter.Text(self, yscrollcommand=scrollbar.set, wrap="word", font=("simhei", 12, "normal"))
@@ -23,7 +23,7 @@ class Help(tkinter.Toplevel):
 
     def get_help_text(self):
         try:
-            file = open(Path.resource_path(os.path.normpath(".\\Data\\Help.txt")), "r", encoding="utf8")
+            file = open(Path.resource_path(os.path.normpath("./Data/Help.txt")), "r", encoding="utf8")
             text = file.read()
             file.close()
             return text

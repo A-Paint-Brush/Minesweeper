@@ -13,7 +13,7 @@ class Window(tkinter.Tk):
         self.min_resolution = (245, 245)
         self.title("Minesweeper")
         self.resizable(False, False)
-        self.iconbitmap(Path.resource_path(os.path.normpath(".\\Images\\icon\\Icon.ico")))
+        self.iconbitmap(Path.resource_path(os.path.normpath("./Images/icon/Icon.ico")))
         self.top_bar = None
         self.board = None
         self.menu = Menu.Menu(self, self.reset_game, self.toggle_marks)
