@@ -13,7 +13,7 @@ class Board(tkinter.Frame):
         self.mine_list = list(list(0 for column in range(self.board_size[0])) for row in range(self.board_size[1]))
         self.visual_list = list(list("unopened" for column in range(self.board_size[0])) for row in range(self.board_size[1]))
         image_dir = Path.resource_path(os.path.normpath("./Images"))
-        self.images = dict((image[:-4], tkinter.PhotoImage(file=os.path.join(image_dir, image))) for image in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, image)))
+        self.images = dict((image[:-4], tkinter.PhotoImage(file=os.path.join(image_dir, image))) for image in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, image)) and image.endswith(".png"))
         self.buttons = []
         self.number_list = []
         self.indexes = []

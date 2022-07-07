@@ -10,7 +10,7 @@ class Topbar(tkinter.Frame):
         super().__init__(root)
         self.root = root
         image_dir = Path.resource_path(os.path.normpath("./Images/top bar"))
-        self.images = dict((image[:-4], tkinter.PhotoImage(file=os.path.join(image_dir, image))) for image in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, image)))
+        self.images = dict((image[:-4], tkinter.PhotoImage(file=os.path.join(image_dir, image))) for image in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, image)) and image.endswith(".png"))
         self.timer_obj = Timer.Timer()
         self.timer_obj.reset()
         self.next_id = None
