@@ -4,10 +4,6 @@ A recreation of the Windows 95 Minesweeper written in Python.
 
 ![Minesweeper Screenshot](https://user-images.githubusercontent.com/96622265/177537807-56537f96-fa31-414c-967c-ac4cdb99857b.png)
 
-### Downloads
-
-Windows Executable: [Minesweeper.exe](https://github.com/A-Paint-Brush/Minesweeper/raw/main/Releases/Minesweeper.exe)
-
 ### Installation Instructions
 
 Just place the executable into any directory you like, and then make a shortcut to it on the desktop. I recommend you don't place the executable on the desktop because the executable generates a save file in its working directory, so if you put it there the save file will also be visible on the desktop.
